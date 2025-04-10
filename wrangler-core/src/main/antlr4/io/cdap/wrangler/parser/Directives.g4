@@ -195,6 +195,14 @@ identifierList
  : Identifier (',' Identifier)*
  ;
 
+byteSizeArg
+  : BYTE_SIZE
+  ;
+
+timeDurationArg
+  : TIME_DURATION
+  ;
+
 
 /*
  * Following are the Lexer Rules used for tokenizing the recipe.
