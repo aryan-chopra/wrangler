@@ -1,0 +1,88 @@
+package io.cdap.directives.aggregates;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.cdap.wrangler.api.Arguments;
+import io.cdap.wrangler.api.Directive;
+import io.cdap.wrangler.api.DirectiveExecutionException;
+import io.cdap.wrangler.api.DirectiveParseException;
+import io.cdap.wrangler.api.ExecutorContext;
+import io.cdap.wrangler.api.Row;
+import io.cdap.wrangler.api.TransientStore;
+import io.cdap.wrangler.api.TransientVariableScope;
+import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.Identifier;
+import io.cdap.wrangler.api.parser.TimeDuration;
+import io.cdap.wrangler.api.parser.TokenType;
+import io.cdap.wrangler.api.parser.UsageDefinition;
+
+public class TimeAndByteDirective implements Directive {
+    public static final String NAME = "time-byte-aggregation";
+
+    private static final String SOURCE_BYTE_SIZE = "byte_size";
+    private static final String SOURCE_TIME_DURATION = "time_duration";
+    private static final String TARGET_TOTAL_SIZE = "total_size";
+    private static final String TARGET_TOTAL_DURATION = "total_duration";
+
+    private String sourceByteSizeColumn;
+    private String sourceTimeDurationColumn;
+    private String targetTotalSizeColumn;
+    private String targetTotalDurationColumn;
+
+    @Override
+    public UsageDefinition define() {
+        UsageDefinition.Builder builder = new UsageDefinition.Builder(NAME);
+
+        builder.define(SOURCE_BYTE_SIZE, TokenType.BYTE_SIZE);
+        builder.define(SOURCE_TIME_DURATION, TokenType.TIME_DURATION);
+        builder.define(TARGET_TOTAL_SIZE, TokenType.BYTE_SIZE);
+        builder.define(TARGET_TOTAL_DURATION, TokenType.TIME_DURATION);
+
+        return builder.build();
+    }
+
+    @Override
+    public void initialize(Arguments args) throws DirectiveParseException {
+        this.sourceByteSizeColumn = args.value(SOURCE_BYTE_SIZE);
+        this.sourceTimeDurationColumn = args.value(SOURCE_TIME_DURATION);
+        this.targetTotalSizeColumn = args.value(TARGET_TOTAL_SIZE);
+        this.targetTotalDurationColumn = args.value(TARGET_TOTAL_DURATION);
+    }
+
+    @Override
+    public List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException {
+        context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_bytes", 0L);
+        context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_duration", 0L);
+
+        for (Row row : rows) {
+            ByteSize byteSize = new ByteSize(row.getValue(this.sourceByteSizeColumn).toString());
+            TimeDuration timeDuration = new TimeDuration(row.getValue(this.sourceTimeDurationColumn).toString());
+
+            long currentBytes = context.getTransientStore().get("total_bytes");
+            long currentDuration = context.getTransientStore().get("total_duration");
+
+            context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_bytes",
+                    currentBytes + byteSize.getBytes());
+            context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_duration",
+                    currentDuration + timeDuration.getTime());
+        }
+
+        long totalBytes = context.getTransientStore().get("total_bytes");
+        long totalDuration = context.getTransientStore().get("total_duration");
+
+        Row resultRow = new Row();
+        resultRow.add(this.targetTotalSizeColumn, totalBytes);
+        resultRow.add(this.targetTotalDurationColumn, totalDuration);
+
+        List<Row> resultRows = new ArrayList<Row>();
+        resultRows.add(resultRow);
+
+        return resultRows;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+}
