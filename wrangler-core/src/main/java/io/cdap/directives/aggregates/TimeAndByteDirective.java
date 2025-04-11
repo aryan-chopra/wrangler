@@ -16,9 +16,6 @@
 
 package io.cdap.directives.aggregates;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.cdap.wrangler.api.Arguments;
 import io.cdap.wrangler.api.Directive;
 import io.cdap.wrangler.api.DirectiveExecutionException;
@@ -30,6 +27,9 @@ import io.cdap.wrangler.api.parser.ByteSize;
 import io.cdap.wrangler.api.parser.TimeDuration;
 import io.cdap.wrangler.api.parser.TokenType;
 import io.cdap.wrangler.api.parser.UsageDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A directive that aggregates byte size and time duration across all input
