@@ -19,17 +19,56 @@ package io.cdap.wrangler.api.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-//Sample comment
+/**
+ * The {@code ByteSize} class parses and represents a byte size value with its
+ * units.
+ * It implements the {@code Token} interface to provide standardized access to:
+ * <ul>
+ * <li>The original string representation</li>
+ * <li>The numeric byte size component</li>
+ * <li>The byte units component (e.g., "B", "KB", "MB")</li>
+ * </ul>
+ *
+ * <p>
+ * This class provides methods to access both the parsed components and the
+ * original value, as well as JSON serialization capabilities.
+ * </p>
+ */
 public class ByteSize implements Token {
+    /**
+     * The original string representation of the byte size.
+     */
     private String value;
+
+    /**
+     * The numeric byte size component extracted from the value.
+     */
     private long bytes;
+
+    /**
+     * The byte units component extracted from the value.
+     */
     private String byteUnits;
 
+    /**
+     * Constructs a {@code ByteSize} object by parsing the input string.
+     * The string should contain a numeric size followed by byte units.
+     *
+     * @param value the string representation of byte size (e.g., "1024KB")
+     * @throws IllegalArgumentException if the value cannot be properly parsed
+     */
     public ByteSize(String value) {
         this.value = value;
         extractBytesAndUnits(value);
     }
 
+    /**
+     * Parses the input string to extract the numeric byte size and units.
+     * The numeric portion is converted to a long, while the remaining characters
+     * are treated as the byte units.
+     *
+     * @param value the string to parse
+     */
     private void extractBytesAndUnits(String value) {
         int index = 0;
 
@@ -45,24 +84,54 @@ public class ByteSize implements Token {
         this.byteUnits = tempByteUnits.toString();
     }
 
+    /**
+     * Returns the numeric byte size component.
+     *
+     * @return the byte size as a long value
+     */
     public long getBytes() {
         return this.bytes;
     }
 
+    /**
+     * Returns the byte units component.
+     *
+     * @return the byte units as a string (e.g., "B", "KB", "MB")
+     */
     public String getByteUnits() {
         return this.byteUnits;
     }
 
+    /**
+     * Returns the original string representation of this byte size.
+     *
+     * @return the original string value
+     */
     @Override
     public String value() {
         return this.value;
     }
 
+    /**
+     * Returns the token type for this class.
+     *
+     * @return {@code TokenType.BYTE_SIZE}
+     */
     @Override
     public TokenType type() {
         return TokenType.BYTE_SIZE;
     }
 
+    /**
+     * Converts this byte size to its JSON representation.
+     * The JSON object contains:
+     * <ul>
+     * <li>The token type ("BYTE_SIZE")</li>
+     * <li>The original string value</li>
+     * </ul>
+     *
+     * @return a {@code JsonElement} representing this byte size
+     */
     @Override
     public JsonElement toJson() {
         JsonObject object = new JsonObject();
