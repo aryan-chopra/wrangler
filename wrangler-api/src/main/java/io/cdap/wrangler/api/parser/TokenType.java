@@ -16,9 +16,9 @@
 
 package io.cdap.wrangler.api.parser;
 
-import java.io.Serializable;
-
 import io.cdap.wrangler.api.annotations.PublicEvolving;
+
+import java.io.Serializable;
 
 /**
  * The TokenType class provides the enumerated types for different types of
