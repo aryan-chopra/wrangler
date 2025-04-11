@@ -16,6 +16,9 @@
 
 package io.cdap.directives.aggregates;
 
+import io.cdap.cdap.api.annotation.Description;
+import io.cdap.cdap.api.annotation.Name;
+import io.cdap.cdap.api.annotation.Plugin;
 import io.cdap.wrangler.api.Arguments;
 import io.cdap.wrangler.api.Directive;
 import io.cdap.wrangler.api.DirectiveExecutionException;
@@ -23,6 +26,7 @@ import io.cdap.wrangler.api.DirectiveParseException;
 import io.cdap.wrangler.api.ExecutorContext;
 import io.cdap.wrangler.api.Row;
 import io.cdap.wrangler.api.TransientVariableScope;
+import io.cdap.wrangler.api.annotations.Categories;
 import io.cdap.wrangler.api.parser.ByteSize;
 import io.cdap.wrangler.api.parser.TimeDuration;
 import io.cdap.wrangler.api.parser.TokenType;
@@ -41,6 +45,11 @@ import java.util.List;
  * The results are stored as transient variables and also returned as a single
  * result row.
  */
+
+@Plugin(type = Directive.TYPE)
+@Name(TimeAndByteDirective.NAME)
+@Categories(categories = { "aggregation"})
+@Description("calculates the total of specified byte and duration columns across all rows and stores them as a new row with total values")
 public class TimeAndByteDirective implements Directive {
     public static final String NAME = "time-byte-aggregation";
 
