@@ -19,6 +19,7 @@ package io.cdap.wrangler.api.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+//Sample comment
 public class ByteSize implements Token {
     private String value;
     private long bytes;
