@@ -26,7 +26,6 @@ import com.google.gson.JsonObject;
  * <ul>
  * <li>The original string representation</li>
  * <li>The numeric byte size component</li>
- * <li>The byte units component (e.g., "B", "KB", "MB")</li>
  * </ul>
  *
  * <p>
@@ -44,11 +43,6 @@ public class ByteSize implements Token {
      * The numeric byte size component extracted from the value.
      */
     private long bytes;
-
-    /**
-     * The byte units component extracted from the value.
-     */
-    private String byteUnits;
 
     /**
      * Constructs a {@code ByteSize} object by parsing the input string.
@@ -71,9 +65,9 @@ public class ByteSize implements Token {
      */
     private void extractBytesAndUnits(String value) {
         double tempValue = Double.parseDouble(value.substring(0, value.length() - 2));
-        this.byteUnits = value.substring(value.length() - 2, value.length()).toLowerCase();
+        String tempByteUnits = value.substring(value.length() - 2, value.length()).toLowerCase();
 
-        switch(byteUnits) {
+        switch(tempByteUnits) {
             case "mb":
                 this.bytes = (long)Math.floor(tempValue * 1000 * 1000);
                 break;
@@ -89,15 +83,6 @@ public class ByteSize implements Token {
      */
     public long getBytes() {
         return this.bytes;
-    }
-
-    /**
-     * Returns the byte units component.
-     *
-     * @return the byte units as a string (e.g., "B", "KB", "MB")
-     */
-    public String getByteUnits() {
-        return this.byteUnits;
     }
 
     /**

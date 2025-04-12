@@ -8,13 +8,26 @@ import io.cdap.wrangler.api.parser.ByteSize;
 public class ByteSizeTest {
 
     @Test
-    public void testCandidConversion() throws Exception {
-        String input = "10kb";
+    public void testKiloBytes() throws Exception {
+        String kb = "10kb";
+        String decimalKb = "5.9kb";
 
-        ByteSize byteSize = new ByteSize(input);
+        ByteSize kbSize = new ByteSize(kb);
+        ByteSize decimalSize = new ByteSize(decimalKb);
 
-        Assert.assertEquals(10000, byteSize.getBytes());
-        Assert.assertEquals("kb", byteSize.getByteUnits());
+        Assert.assertEquals(10000, kb.getBytes());
+        Assert.assertEquals(5900, decimalSize.getBytes());
     }
 
+    @Test
+    public void testMegaBytes() throws Exception {
+        String mb = "15mb";
+        String decimalMb = "5.94mb";
+
+        ByteSize mbSize = new ByteSize(mb);
+        ByteSize decimalSize = new ByteSize(decimalMb);
+
+        Assert.assertEquals(15_000_000, mbSize.getBytes());
+        Assert.assertEquals(5_940_000, decimalSize.getBytes());
+    }
 }
