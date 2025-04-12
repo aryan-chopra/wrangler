@@ -48,7 +48,7 @@ import java.util.List;
 
 @Plugin(type = Directive.TYPE)
 @Name(TimeAndByteDirective.NAME)
-@Categories(categories = { "aggregation"})
+@Categories(categories = { "aggregate-stats"})
 @Description("calculates the total of specified byte and duration columns across all rows and stores them as a new row with total values")
 public class TimeAndByteDirective implements Directive {
     public static final String NAME = "time-byte-aggregation";
