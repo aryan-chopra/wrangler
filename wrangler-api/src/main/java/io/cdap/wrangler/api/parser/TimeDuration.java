@@ -76,10 +76,10 @@ public class TimeDuration implements Token {
 
         switch (tempTimeUnits) {
             case "s":
-                this.duration = (long)(tempTimeDuration * 1_000_000_000L);
+                this.duration = (long) (tempTimeDuration * 1_000_000_000L);
                 break;
             case "ms":
-                this.duration = (long)(tempTimeDuration * 1_000_000L);
+                this.duration = (long) (tempTimeDuration * 1_000_000L);
         }
     }
 
@@ -99,7 +99,7 @@ public class TimeDuration implements Token {
      * @return the equivalent duration in seconds as a double value
      */
     public static double nanosecondsToSeconds(long nanoseconds) {
-        return (double)nanoseconds / 1_000_000_000;
+        return (double) nanoseconds / 1_000_000_000;
     }
 
     /**
@@ -109,7 +109,7 @@ public class TimeDuration implements Token {
      * @return the equivalent duration in milliseconds as a double value
      */
     public static double nanosecondsToMilliseconds(long nanoseconds) {
-        return (double)nanoseconds / 1_000_000;
+        return (double) nanoseconds / 1_000_000;
     }
 
     /**

@@ -47,7 +47,7 @@ public class ByteSize implements Token {
     /**
      * The factor used for byte size calculations (1000 for decimal-based units).
      */
-    private static long FACTOR = 1000;
+    private static final long FACTOR = 1000;
 
     /**
      * Constructs a {@code ByteSize} object by parsing the input string.
@@ -74,10 +74,10 @@ public class ByteSize implements Token {
 
         switch(tempByteUnits) {
             case "mb":
-                this.bytes = (long)Math.floor(tempValue * FACTOR * FACTOR);
+                this.bytes = (long) Math.floor(tempValue * FACTOR * FACTOR);
                 break;
             case "kb":
-                this.bytes = (long)Math.floor(tempValue * FACTOR);
+                this.bytes = (long) Math.floor(tempValue * FACTOR);
         }
     }
 
