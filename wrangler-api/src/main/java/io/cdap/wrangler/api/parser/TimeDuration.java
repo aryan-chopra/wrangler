@@ -46,11 +46,6 @@ public class TimeDuration implements Token {
     private long duration;
 
     /**
-     * The time units component extracted from the value (e.g., "ms", "s", "m").
-     */
-    private String timeUnits;
-
-    /**
      * Constructs a TimeDuration by parsing the input string value.
      * The value should contain a numeric duration followed by time units.
      *
@@ -77,9 +72,9 @@ public class TimeDuration implements Token {
         }
 
         double tempTimeDuration = Double.parseDouble(value.substring(0, unitStartIndex));
-        this.timeUnits = value.substring(unitStartIndex, value.length()).toLowerCase();
+        String tempTimeUnits = value.substring(unitStartIndex, value.length()).toLowerCase();
 
-        switch (this.timeUnits) {
+        switch (tempTimeUnits) {
             case "s":
                 this.duration = (long)(tempTimeDuration * 1_000_000_000L);
                 break;
@@ -95,15 +90,6 @@ public class TimeDuration implements Token {
      */
     public long getTime() {
         return this.duration;
-    }
-
-    /**
-     * Returns the time units component.
-     *
-     * @return the time units as a string (e.g., "ms", "s")
-     */
-    public String getTimeUnits() {
-        return this.timeUnits;
     }
 
     /**
