@@ -69,18 +69,23 @@ public class TimeDuration implements Token {
      * @param value the string to parse
      */
     private void extractTimeAndUnits(String value) {
-        int index = 0;
-
-        while (index < value.length() && (Character.isDigit(value.charAt(index)) || value.charAt(index) == '.')) {
-            this.duration = (this.duration * 10) + Character.getNumericValue(value.charAt(index));
-            index++;
+        int unitStartIndex = 0;
+        if (Character.isDigit(value.charAt(value.length() - 2)) == false) {
+            unitStartIndex = value.length() - 2;
+        } else {
+            unitStartIndex = value.length() - 1;
         }
 
-        StringBuilder tempByteUnits = new StringBuilder();
-        while (index < value.length()) {
-            tempByteUnits.append(value.charAt(index));
+        double tempTimeDuration = Double.parseDouble(value.substring(0, value.length() - 2));
+        this.timeUnits = value.substring(unitStartIndex, value.length()).toLowerCase();
+
+        switch (this.timeUnits) {
+            case "s":
+                this.duration = (long)(tempTimeDuration * 1_000_000_000);
+                break;
+            case "ms":
+                this.duration = (long)(tempTimeDuration * 1_000_000);
         }
-        this.timeUnits = tempByteUnits.toString();
     }
 
     /**
