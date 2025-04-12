@@ -27,10 +27,7 @@ import io.cdap.wrangler.api.ExecutorContext;
 import io.cdap.wrangler.api.Row;
 import io.cdap.wrangler.api.TransientVariableScope;
 import io.cdap.wrangler.api.annotations.Categories;
-import io.cdap.wrangler.api.parser.ByteSize;
-import io.cdap.wrangler.api.parser.TimeDuration;
-import io.cdap.wrangler.api.parser.TokenType;
-import io.cdap.wrangler.api.parser.UsageDefinition;
+import io.cdap.wrangler.api.parser.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,10 +65,10 @@ public class TimeAndByteDirective implements Directive {
         UsageDefinition.Builder builder = new UsageDefinition.Builder(NAME);
 
         // Define input and output argument types.
-        builder.define(SOURCE_BYTE_SIZE, TokenType.BYTE_SIZE);
-        builder.define(SOURCE_TIME_DURATION, TokenType.TIME_DURATION);
-        builder.define(TARGET_TOTAL_SIZE, TokenType.BYTE_SIZE);
-        builder.define(TARGET_TOTAL_DURATION, TokenType.TIME_DURATION);
+        builder.define(SOURCE_BYTE_SIZE, TokenType.COLUMN_NAME);
+        builder.define(SOURCE_TIME_DURATION, TokenType.COLUMN_NAME);
+        builder.define(TARGET_TOTAL_SIZE, TokenType.IDENTIFIER);
+        builder.define(TARGET_TOTAL_DURATION, TokenType.IDENTIFIER);
 
         return builder.build();
     }
@@ -87,14 +84,16 @@ public class TimeAndByteDirective implements Directive {
         }
 
         // Extract argument values from the input and assign to internal fields.
-        this.sourceByteSizeColumn = args.value(SOURCE_BYTE_SIZE);
-        this.sourceTimeDurationColumn = args.value(SOURCE_TIME_DURATION);
-        this.targetTotalSizeColumn = args.value(TARGET_TOTAL_SIZE);
-        this.targetTotalDurationColumn = args.value(TARGET_TOTAL_DURATION);
+        this.sourceByteSizeColumn = ((ColumnName)args.value(SOURCE_BYTE_SIZE)).value();
+        this.sourceTimeDurationColumn = ((ColumnName)args.value(SOURCE_TIME_DURATION)).value();
+        this.targetTotalSizeColumn = ((Identifier)args.value(TARGET_TOTAL_SIZE)).value();
+        this.targetTotalDurationColumn = ((Identifier)args.value(TARGET_TOTAL_DURATION)).value();
     }
 
     @Override
     public List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException {
+        System.out.println("Executing directive execute");
+
         // Initialize transient variables for global aggregation.
 
         context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_bytes", 0L);

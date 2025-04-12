@@ -17,8 +17,14 @@ public class TimeAndByteDirectiveTest {
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
+        rows.add(new Row("byte_size", "1kb").add("time_duration", "2s"));
+        rows.add(new Row("byte_size", "1kb").add("time_duration", "2s"));
 
         List<Row> result = TestingRig.execute(recipe, rows);
+
+        for (Row row : result) {
+            System.out.println(row.getValue("total_duration"));
+        }
 
         Assert.assertEquals(1, result.size());
     }
