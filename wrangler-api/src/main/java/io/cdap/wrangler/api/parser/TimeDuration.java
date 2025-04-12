@@ -93,6 +93,26 @@ public class TimeDuration implements Token {
     }
 
     /**
+     * Converts a duration in nanoseconds to seconds.
+     *
+     * @param nanoseconds the duration in nanoseconds to convert
+     * @return the equivalent duration in seconds as a double value
+     */
+    public static double nanosecondsToSeconds(long nanoseconds) {
+        return (double)nanoseconds / 1_000_000_000;
+    }
+
+    /**
+     * Converts a duration in nanoseconds to milliseconds.
+     *
+     * @param nanoseconds the duration in nanoseconds to convert
+     * @return the equivalent duration in milliseconds as a double value
+     */
+    public static double nanosecondsToMilliseconds(long nanoseconds) {
+        return (double)nanoseconds / 1_000_000;
+    }
+
+    /**
      * Returns the original string representation of this time duration.
      *
      * @return the original string value
