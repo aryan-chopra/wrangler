@@ -30,6 +30,7 @@ import io.cdap.wrangler.api.annotations.Categories;
 import io.cdap.wrangler.api.parser.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -92,12 +93,13 @@ public class TimeAndByteDirective implements Directive {
 
     @Override
     public List<Row> execute(List<Row> rows, ExecutorContext context) throws DirectiveExecutionException {
-        System.out.println("Executing directive execute");
-
         // Initialize transient variables for global aggregation.
-
-        context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_bytes", 0L);
-        context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_duration", 0L);
+        if (context.getTransientStore().getVariables().contains("total_bytes") == false) {
+            context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_bytes", 0L);
+        }
+        if (context.getTransientStore().getVariables().contains("total_duration") == false) {
+            context.getTransientStore().set(TransientVariableScope.GLOBAL, "total_duration", 0L);
+        }
 
         // Iterate through all rows and compute cumulative byte size and duration.
         for (Row row : rows) {
@@ -114,6 +116,10 @@ public class TimeAndByteDirective implements Directive {
                     currentDuration + timeDuration.getTime());
         }
 
+        if (context.getTransientStore().get("is_last") == null) {
+            return Collections.emptyList();
+        }
+
         // Fetch the aggregated values from the transient store.
         long totalBytes = context.getTransientStore().get("total_bytes");
         long totalDuration = context.getTransientStore().get("total_duration");
@@ -124,14 +130,11 @@ public class TimeAndByteDirective implements Directive {
         resultRow.add(this.targetTotalDurationColumn, totalDuration);
 
         // Return a single-row list containing the result row.
-        List<Row> resultRows = new ArrayList<Row>();
-        resultRows.add(resultRow);
-
-        return resultRows;
+        return Collections.singletonList(resultRow);
     }
 
     @Override
     public void destroy() {
-
+        System.out.println("Destroying");
     }
 }

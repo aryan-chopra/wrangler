@@ -129,6 +129,10 @@ public final class RecipePipelineExecutor implements RecipePipeline<Row, Structu
           context.getTransientStore().reset(TransientVariableScope.LOCAL);
         }
 
+        if (i == rows.size() - 1) {
+          context.getTransientStore().set(TransientVariableScope.GLOBAL, "is_last", true);
+        }
+
         List<Row> cumulativeRows = rows.subList(i, i + 1);
         directiveIndex = 0;
         try {
