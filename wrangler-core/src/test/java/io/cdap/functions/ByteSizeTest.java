@@ -13,7 +13,7 @@ public class ByteSizeTest {
 
         ByteSize byteSize = new ByteSize(input);
 
-        Assert.assertEquals(10, byteSize.getBytes());
+        Assert.assertEquals(10000, byteSize.getBytes());
         Assert.assertEquals("kb", byteSize.getByteUnits());
     }
 
