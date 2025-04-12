@@ -64,6 +64,8 @@ directive
     | stringList
     | numberRanges
     | properties
+    | byteSizeArg
+    | timeDurationArg
   )*?
   ;
 
@@ -196,11 +198,11 @@ identifierList
  ;
 
 byteSizeArg
-  : BYTE_SIZE
+  : BYTE_SIZE BYTE_UNIT
   ;
 
 timeDurationArg
-  : TIME_DURATION
+  : TIME_DURATION TIME_UNIT
   ;
 
 
@@ -325,8 +327,8 @@ BYTE_SIZE
   ;
 
 BYTE_UNIT
-  : 'KB'
-  | 'MB'
+  : [kK] [bB]
+  | [mM] [bB]
   ;
 
 TIME_DURATION
@@ -334,6 +336,6 @@ TIME_DURATION
   ;
 
 TIME_UNIT
-  : 'ms'
-  | 's'
+  : [mM] [sS]
+  | [sS]
   ;
