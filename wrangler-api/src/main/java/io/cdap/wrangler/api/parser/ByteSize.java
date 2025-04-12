@@ -45,6 +45,11 @@ public class ByteSize implements Token {
     private long bytes;
 
     /**
+     * The factor used for byte size calculations (1000 for decimal-based units).
+     */
+    private static long FACTOR = 1000;
+
+    /**
      * Constructs a {@code ByteSize} object by parsing the input string.
      * The string should contain a numeric size followed by byte units.
      *
@@ -69,10 +74,10 @@ public class ByteSize implements Token {
 
         switch(tempByteUnits) {
             case "mb":
-                this.bytes = (long)Math.floor(tempValue * 1000 * 1000);
+                this.bytes = (long)Math.floor(tempValue * FACTOR * FACTOR);
                 break;
             case "kb":
-                this.bytes = (long)Math.floor(tempValue * 1000);
+                this.bytes = (long)Math.floor(tempValue * FACTOR);
         }
     }
 
@@ -83,6 +88,26 @@ public class ByteSize implements Token {
      */
     public long getBytes() {
         return this.bytes;
+    }
+
+    /**
+     * Converts the given bytes to kilobytes.
+     *
+     * @param bytes the number of bytes to convert
+     * @return the equivalent value in kilobytes
+     */
+    public static double bytesToKiloBytes(long bytes) {
+        return ((double) bytes / FACTOR);
+    }
+
+    /**
+     * Converts the given bytes to megabytes.
+     *
+     * @param bytes the number of bytes to convert
+     * @return the equivalent value in megabytes
+     */
+    public static double bytesToMegaBytes(long bytes) {
+        return ((double) bytes / (FACTOR * FACTOR));
     }
 
     /**
