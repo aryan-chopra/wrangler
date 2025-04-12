@@ -27,7 +27,12 @@ import io.cdap.wrangler.api.ExecutorContext;
 import io.cdap.wrangler.api.Row;
 import io.cdap.wrangler.api.TransientVariableScope;
 import io.cdap.wrangler.api.annotations.Categories;
-import io.cdap.wrangler.api.parser.*;
+import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.ColumnName;
+import io.cdap.wrangler.api.parser.Identifier;
+import io.cdap.wrangler.api.parser.TimeDuration;
+import io.cdap.wrangler.api.parser.TokenType;
+import io.cdap.wrangler.api.parser.UsageDefinition;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +52,7 @@ import java.util.List;
 @Plugin(type = Directive.TYPE)
 @Name(TimeAndByteDirective.NAME)
 @Categories(categories = { "transient"})
-@Description("calculates the total of specified byte and duration columns across all rows and stores them as a new row with total values")
+@Description("Aggregates time and byte values")
 public class TimeAndByteDirective implements Directive {
     public static final String NAME = "aggregate-stats";
 
@@ -85,10 +90,10 @@ public class TimeAndByteDirective implements Directive {
         }
 
         // Extract argument values from the input and assign to internal fields.
-        this.sourceByteSizeColumn = ((ColumnName)args.value(SOURCE_BYTE_SIZE)).value();
-        this.sourceTimeDurationColumn = ((ColumnName)args.value(SOURCE_TIME_DURATION)).value();
-        this.targetTotalSizeColumn = ((Identifier)args.value(TARGET_TOTAL_SIZE)).value();
-        this.targetTotalDurationColumn = ((Identifier)args.value(TARGET_TOTAL_DURATION)).value();
+        this.sourceByteSizeColumn = ((ColumnName) args.value(SOURCE_BYTE_SIZE)).value();
+        this.sourceTimeDurationColumn = ((ColumnName) args.value(SOURCE_TIME_DURATION)).value();
+        this.targetTotalSizeColumn = ((Identifier) args.value(TARGET_TOTAL_SIZE)).value();
+        this.targetTotalDurationColumn = ((Identifier) args.value(TARGET_TOTAL_DURATION)).value();
     }
 
     @Override
