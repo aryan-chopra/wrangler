@@ -70,18 +70,9 @@ public class ByteSize implements Token {
      * @param value the string to parse
      */
     private void extractBytesAndUnits(String value) {
-        int index = 0;
+        this.bytes = Long.parseLong(value.substring(0, value.length() - 2));
 
-        while (index < value.length() && Character.isDigit(value.charAt(index))) {
-            this.bytes = (this.bytes * 10) + Character.getNumericValue(value.charAt(index));
-            index++;
-        }
-
-        StringBuilder tempByteUnits = new StringBuilder();
-        while (index < value.length()) {
-            tempByteUnits.append(value.charAt(index));
-        }
-        this.byteUnits = tempByteUnits.toString();
+        this.byteUnits = value.substring(value.length() - 2, value.length()).toLowerCase();
     }
 
     /**
