@@ -51,7 +51,7 @@ import java.util.List;
 @Categories(categories = { "aggregate-stats"})
 @Description("calculates the total of specified byte and duration columns across all rows and stores them as a new row with total values")
 public class TimeAndByteDirective implements Directive {
-    public static final String NAME = "time-byte-aggregation";
+    public static final String NAME = "aggregate-stats";
 
     private static final String SOURCE_BYTE_SIZE = "byte_size";
     private static final String SOURCE_TIME_DURATION = "time_duration";
@@ -78,6 +78,14 @@ public class TimeAndByteDirective implements Directive {
 
     @Override
     public void initialize(Arguments args) throws DirectiveParseException {
+        if (args.size() < 4) {
+            throw new DirectiveParseException("Missing arguments");
+        }
+
+        if (args.value(SOURCE_BYTE_SIZE) == null) {
+            throw new DirectiveParseException("Missing input");
+        }
+
         // Extract argument values from the input and assign to internal fields.
         this.sourceByteSizeColumn = args.value(SOURCE_BYTE_SIZE);
         this.sourceTimeDurationColumn = args.value(SOURCE_TIME_DURATION);

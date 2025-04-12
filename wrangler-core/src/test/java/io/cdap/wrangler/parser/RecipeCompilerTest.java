@@ -215,4 +215,22 @@ public class RecipeCompilerTest {
     Set<String> loadableDirectives = compile.getSymbols().getLoadableDirectives();
     Assert.assertEquals(4, loadableDirectives.size());
   }
+
+  @Test
+  public void testAggregateStatsRecipeSuccess() throws Exception {
+    String[] recipe = new String[] {
+            "aggregate-stats :input_bytes :input_seconds output_bytes output_seconds"
+    };
+    CompileStatus compile = TestingRig.compile(recipe);
+    Assert.assertEquals(true, compile.isSuccess());
+  }
+
+  @Test
+  public void testAggregateStatsRecipeFailure() throws Exception {
+    String[] recipe = new String[] {
+            "aggregate-stats :input_bytes output_bytes output_seconds"
+    };
+    CompileStatus compile = TestingRig.compile(recipe);
+    Assert.assertEquals(false, compile.isSuccess());
+  }
 }
