@@ -76,15 +76,15 @@ public class TimeDuration implements Token {
             unitStartIndex = value.length() - 1;
         }
 
-        double tempTimeDuration = Double.parseDouble(value.substring(0, value.length() - 2));
+        double tempTimeDuration = Double.parseDouble(value.substring(0, unitStartIndex));
         this.timeUnits = value.substring(unitStartIndex, value.length()).toLowerCase();
 
         switch (this.timeUnits) {
             case "s":
-                this.duration = (long)(tempTimeDuration * 1_000_000_000);
+                this.duration = (long)(tempTimeDuration * 1_000_000_000L);
                 break;
             case "ms":
-                this.duration = (long)(tempTimeDuration * 1_000_000);
+                this.duration = (long)(tempTimeDuration * 1_000_000L);
         }
     }
 
