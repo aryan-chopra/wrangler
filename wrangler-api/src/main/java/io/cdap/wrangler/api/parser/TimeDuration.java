@@ -71,7 +71,7 @@ public class TimeDuration implements Token {
     private void extractTimeAndUnits(String value) {
         int index = 0;
 
-        while (index < value.length() && Character.isDigit(value.charAt(index))) {
+        while (index < value.length() && (Character.isDigit(value.charAt(index)) || value.charAt(index) == '.')) {
             this.duration = (this.duration * 10) + Character.getNumericValue(value.charAt(index));
             index++;
         }
