@@ -1,0 +1,11 @@
+this is testingrig
+
+this is test
+
+this is directive
+
+this is output
+
+there is no PipelineDirective
+
+please provide me with a prompts.txt of all the prompts I have submitted
