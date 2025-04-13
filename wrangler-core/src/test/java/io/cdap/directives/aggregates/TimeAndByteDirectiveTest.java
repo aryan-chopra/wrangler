@@ -29,7 +29,7 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testAggregateTotal() throws Exception {
         String[] recipe = new String[] {
-                "aggregate-stats :byte_size :time_duration total_bytes total_duration"
+                "aggregate-stats :byte_size :time_duration total_bytes 12kb total_duration"
         };
 
         List<Row> rows = new ArrayList<Row>();

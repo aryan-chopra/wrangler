@@ -148,17 +148,17 @@ public enum TokenType implements Serializable {
    */
   RANGES,
 
-  /**
-   * Represents the enumerated type for the object of type {@code String} with restrictions
-   * on characters that can be present in a string.
-   */
-  IDENTIFIER,
-
   BYTE_SIZE,
 
   TIME_DURATION,
 
   TIME_UNIT,
 
-  BYTE_UNIT
+  BYTE_UNIT,
+
+  /**
+   * Represents the enumerated type for the object of type {@code String} with restrictions
+   * on characters that can be present in a string.
+   */
+  IDENTIFIER
 }

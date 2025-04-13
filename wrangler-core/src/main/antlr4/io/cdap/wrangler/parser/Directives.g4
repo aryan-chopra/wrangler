@@ -200,11 +200,11 @@ identifierList
  ;
 
 byteSizeArg
-  : BYTE_SIZE BYTE_UNIT
+  : BYTE_SIZE
   ;
 
 timeDurationArg
-  : TIME_DURATION TIME_UNIT
+  : TIME_DURATION
   ;
 
 byteUnitArg
@@ -332,7 +332,7 @@ fragment Digit
  ;
 
 BYTE_SIZE
-  : Int
+  : Int BYTE_UNIT
   ;
 
 BYTE_UNIT
@@ -341,7 +341,7 @@ BYTE_UNIT
   ;
 
 TIME_DURATION
-  : Int
+  : Int TIME_UNIT
   ;
 
 TIME_UNIT
