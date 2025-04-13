@@ -46,11 +46,10 @@ import java.util.List;
  *
  * This directive calculates the total of specified byte and duration columns
  * across all rows and stores them as a new row with total values.
- * 
+ *
  * The results are stored as transient variables and also returned as a single
  * result row.
  */
-
 @Plugin(type = Directive.TYPE)
 @Name(TimeAndByteDirective.NAME)
 @Categories(categories = { "transient"})
@@ -58,15 +57,19 @@ import java.util.List;
 public class TimeAndByteDirective implements Directive {
     public static final String NAME = "aggregate-stats";
 
+    // Argument name constants
     private static final String SOURCE_BYTE_SIZE = "byte_size";
     private static final String SOURCE_TIME_DURATION = "time_duration";
     private static final String TARGET_TOTAL_SIZE = "total_size";
     private static final String TARGET_TOTAL_DURATION = "target_total_duration";
     private static final String TARGET_BYTE_UNITS = "target_byte_units";
     private static final String TARGET_TIME_UNITS = "target_time_units";
+
+    // Trasient store variable names
     private static final String STORE_BYTE_AGGREGATE = "store_byte_aggregate";
     private static final String STORE_TIME_AGGREGATE = "sore_time_aggregate";
 
+    // Directive configuration fields
     private String sourceByteSizeColumn;
     private String sourceTimeDurationColumn;
     private String targetTotalSizeColumn;
@@ -95,15 +98,12 @@ public class TimeAndByteDirective implements Directive {
             throw new DirectiveParseException("Missing arguments");
         }
 
-        if (args.value(SOURCE_BYTE_SIZE) == null) {
-            throw new DirectiveParseException("Missing input");
-        }
-
         // Extract argument values from the input and assign to internal fields.
         this.sourceByteSizeColumn = ((ColumnName) args.value(SOURCE_BYTE_SIZE)).value();
         this.sourceTimeDurationColumn = ((ColumnName) args.value(SOURCE_TIME_DURATION)).value();
         this.targetTotalSizeColumn = ((Identifier) args.value(TARGET_TOTAL_SIZE)).value();
 
+        // Set byte units (default to mb if not specified)
         if (args.contains(TARGET_BYTE_UNITS)) {
             this.targetByteUnits = (args.value(TARGET_BYTE_UNITS));
         } else {
@@ -112,6 +112,7 @@ public class TimeAndByteDirective implements Directive {
 
         this.targetTotalDurationColumn = ((Identifier) args.value(TARGET_TOTAL_DURATION)).value();
 
+        // Set time units (default to seconds if not specified)
         if (args.contains(TARGET_TIME_UNITS)) {
             this.targetTimeUnits = (args.value(TARGET_TIME_UNITS));
         } else {
@@ -134,6 +135,7 @@ public class TimeAndByteDirective implements Directive {
             ByteSize byteSize = new ByteSize(row.getValue(this.sourceByteSizeColumn).toString());
             TimeDuration timeDuration = new TimeDuration(row.getValue(this.sourceTimeDurationColumn).toString());
 
+            // Update accumulated values in transient store
             long currentBytes = context.getTransientStore().get(STORE_BYTE_AGGREGATE);
             long currentDuration = context.getTransientStore().get(STORE_TIME_AGGREGATE);
 
@@ -144,6 +146,7 @@ public class TimeAndByteDirective implements Directive {
                     currentDuration + timeDuration.getTime());
         }
 
+        // If this isn't the last batch, return empty list
         if (context.getTransientStore().get("is_last") == null) {
             return Collections.emptyList();
         }
@@ -155,6 +158,7 @@ public class TimeAndByteDirective implements Directive {
         // Create a new result row with the total aggregated values.
         Row resultRow = new Row();
 
+        // Convert and store byte total in requested units
         switch (this.targetByteUnits.value().toString()) {
             case "kb":
                 resultRow.add(this.targetTotalSizeColumn, ByteSize.bytesToKiloBytes(totalBytes));
@@ -164,6 +168,7 @@ public class TimeAndByteDirective implements Directive {
                 break;
         }
 
+        // Convert and store time total in requested units
         switch (this.targetTimeUnits.value().toString()) {
             case "ms":
                 resultRow.add(this.targetTotalDurationColumn, TimeDuration.nanosecondsToMilliseconds(totalDuration));
