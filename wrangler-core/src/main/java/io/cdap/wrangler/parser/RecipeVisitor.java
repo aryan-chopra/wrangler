@@ -322,6 +322,11 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     return builder;
   }
 
+  /**
+   * A Directive can consist of BYTE_SIZE field. The BYTE_SIZE field is represented as
+   * an example, "12kb", "1mb". This visitor method extract the BYTE_SIZE value into a
+   * token type <code>BYTE_SIZE</code>.
+   */
   @Override
   public RecipeSymbol.Builder visitByteSizeArg(DirectivesParser.ByteSizeArgContext ctx) {
     ByteSize byteSize = new ByteSize(ctx.BYTE_SIZE().getText());
@@ -329,6 +334,12 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     return builder;
   }
 
+
+  /**
+   * A Directive can consist of TIME_DURATION field. The TIME_DURATION field is represented as
+   * an example, "12s", "1ms". This visitor method extract the TIME_DURATION value into a
+   * token type <code>TIME_DURATION</code>.
+   */
   @Override
   public RecipeSymbol.Builder visitTimeDurationArg(DirectivesParser.TimeDurationArgContext ctx) {
     TimeDuration duration = new TimeDuration(ctx.TIME_DURATION().getText());
@@ -336,6 +347,11 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     return builder;
   }
 
+  /**
+   * A Directive can consist of BYTE_UNIT field. The BYTE_UNIT field is represented as
+   * an example, "kb", "mb". This visitor method extract the BYTE_UNIT value into a
+   * token type <code>BYTE_UNIT</code>.
+   */
   @Override
   public RecipeSymbol.Builder visitByteUnitArg(DirectivesParser.ByteUnitArgContext ctx) {
     ByteUnit unit = new ByteUnit(ctx.BYTE_UNIT().getText());
@@ -343,6 +359,11 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     return builder;
   }
 
+  /**
+   * A Directive can consist of TIME_UNUT field. The TIME_UNIT field is represented as
+   * an example, "s", "ms". This visitor method extract the TIME_UNIT value into a
+   * token type <code>TIME_UNIT</code>.
+   */
   @Override
   public RecipeSymbol.Builder visitTimeUnitArg(DirectivesParser.TimeUnitArgContext ctx) {
     TimeUnit unit = new TimeUnit(ctx.TIME_UNIT().getText());
