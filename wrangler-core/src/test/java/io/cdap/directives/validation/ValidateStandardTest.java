@@ -48,7 +48,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests for ValidateStandard and the manifest and schemas in the package.
  */
-@Ignore
 public class ValidateStandardTest {
 
   private static Map<String, Standard> getSpecsInArchive()
