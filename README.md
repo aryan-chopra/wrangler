@@ -154,7 +154,8 @@ These directives are currently available:
 | [Set Column Data Type](wrangler-docs/directives/set-type.md)                    | Convert data type of a column                                    |
 | **NLP**                                                                |                                                                  |
 | [Stemming Tokenized Words](wrangler-docs/directives/stemming.md)                | Applies the Porter stemmer algorithm for English words           |
-| **Transient Aggregators & Setters**                                    |                                                                  |
+| **Transient Aggregators & Setters**        
+| [Aggregate Stats] (wrangler-docs/directives/aggregate-stats.md)                 | Aggregates stats of byte and time data provided with a record.
 | [Increment Variable](wrangler-docs/directives/increment-variable.md)            | Increments a transient variable with a record of processing.     |
 | [Set Variable](wrangler-docs/directives/set-variable.md)                        | Sets a transient variable with a record of processing.     |
 | **Functions**                                                          |                                                                  |
