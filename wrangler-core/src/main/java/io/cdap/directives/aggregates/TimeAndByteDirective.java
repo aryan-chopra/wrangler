@@ -60,6 +60,8 @@ public class TimeAndByteDirective implements Directive {
     private static final String SOURCE_TIME_DURATION = "time_duration";
     private static final String TARGET_TOTAL_SIZE = "total_size";
     private static final String TARGET_TOTAL_DURATION = "total_duration";
+    private static final String TARGET_BYTE_UNITS = "target_byte_units";
+    private static final String TARGET_TIME_UNITS = "target_time_units";
 
     private String sourceByteSizeColumn;
     private String sourceTimeDurationColumn;

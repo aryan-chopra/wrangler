@@ -66,6 +66,8 @@ directive
     | properties
     | byteSizeArg
     | timeDurationArg
+    | byteUnitArg
+    | timeUnitArg
   )*?
   ;
 
@@ -205,6 +207,13 @@ timeDurationArg
   : TIME_DURATION TIME_UNIT
   ;
 
+byteUnitArg
+    : BYTE_UNIT
+    ;
+
+timeUnitArg
+    : TIME_UNIT
+    ;
 
 /*
  * Following are the Lexer Rules used for tokenizing the recipe.
