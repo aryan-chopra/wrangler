@@ -32,7 +32,7 @@ public class ByteSizeTest {
         ByteSize kbSize = new ByteSize(kb);
         ByteSize decimalSize = new ByteSize(decimalKb);
 
-        Assert.assertEquals(10000, kb.getBytes());
+        Assert.assertEquals(10000, kbSize.getBytes());
         Assert.assertEquals(5900, decimalSize.getBytes());
     }
 
