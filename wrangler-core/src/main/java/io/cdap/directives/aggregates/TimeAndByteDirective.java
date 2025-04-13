@@ -152,6 +152,10 @@ public class TimeAndByteDirective implements Directive {
 
             long currentBytes, currentDuration, currentRows;
 
+            /*
+             * If aggregate type is sum, it adds the bytes and durations and saves it in the store
+             * If aggregate type is average, it also increments the number of rows in the store
+             */
             switch (this.targetAggregateType.value().toString()) {
                 case "sum":
                     // Update accumulated values in transient store
@@ -190,6 +194,11 @@ public class TimeAndByteDirective implements Directive {
         double resultingBytes = 0D;
         double resultingDuration = 0D;
 
+        /*
+         * If aggregate type is sum, it fetches the total from the store and stores it in a local variable
+         * If aggregate type is average, it fetches the sum and rows, and performs average, and stores the result
+         * in a local variable
+         */
         switch (this.targetAggregateType.value().toString()) {
             case "sum":
                 // Fetch the aggregated values from the transient store.
