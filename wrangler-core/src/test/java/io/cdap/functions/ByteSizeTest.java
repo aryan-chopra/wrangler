@@ -22,8 +22,31 @@ import org.junit.Test;
 
 import io.cdap.wrangler.api.parser.ByteSize;
 
+/**
+ * Test class for {@link ByteSize} functionality.
+ * Verifies correct parsing and conversion of byte size strings with:
+ * <ul>
+ *   <li>Kilobyte ("kb") units</li>
+ *   <li>Megabyte ("mb") units</li>
+ *   <li>Integer and decimal values</li>
+ * </ul>
+ *
+ * <p>Tests validate that string representations are correctly converted to
+ * their equivalent byte counts using decimal-based units (1kb = 1000 bytes).</p>
+ */
 public class ByteSizeTest {
 
+    /**
+     * Tests kilobyte unit parsing functionality.
+     * Verifies that:
+     * <ul>
+     *   <li>Integer kilobyte values are correctly converted</li>
+     *   <li>Decimal kilobyte values are correctly converted</li>
+     *   <li>Values use decimal-based conversion (1000 bytes per kb)</li>
+     * </ul>
+     *
+     * @throws Exception if any parsing error occurs
+     */
     @Test
     public void testKiloBytes() throws Exception {
         String kb = "10kb";
@@ -36,6 +59,17 @@ public class ByteSizeTest {
         Assert.assertEquals(5900, decimalSize.getBytes());
     }
 
+    /**
+     * Tests megabyte unit parsing functionality.
+     * Verifies that:
+     * <ul>
+     *   <li>Integer megabyte values are correctly converted</li>
+     *   <li>Decimal megabyte values are correctly converted</li>
+     *   <li>Values use decimal-based conversion (1000000 bytes per mb)</li>
+     * </ul>
+     *
+     * @throws Exception if any parsing error occurs
+     */
     @Test
     public void testMegaBytes() throws Exception {
         String mb = "15mb";

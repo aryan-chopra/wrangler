@@ -21,8 +21,32 @@ import io.cdap.wrangler.api.parser.TimeDuration;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Test class for {@link TimeDuration} functionality.
+ * Verifies correct parsing and conversion of time duration strings with:
+ * <ul>
+ *   <li>Second ("s") units</li>
+ *   <li>Millisecond ("ms") units</li>
+ *   <li>Both integer and decimal values</li>
+ * </ul>
+ *
+ * <p>Tests validate that string representations are correctly converted to
+ * their equivalent nanosecond durations, with proper handling of unit
+ * conversions and decimal precision.</p>
+ */
 public class TimeDurationTest {
 
+    /**
+     * Tests second unit parsing functionality.
+     * Verifies that:
+     * <ul>
+     *   <li>Integer second values are correctly converted to nanoseconds</li>
+     *   <li>Decimal second values maintain proper precision</li>
+     *   <li>Conversion uses standard time units (1s = 1,000,000,000ns)</li>
+     * </ul>
+     *
+     * @throws Exception if any parsing error occurs
+     */
     @Test
     public void testSeonds() throws Exception {
         String seconds = "5s";
@@ -35,6 +59,17 @@ public class TimeDurationTest {
         Assert.assertEquals(10_200_000_000L, decimalSecondsTimeDuration.getTime());
     }
 
+    /**
+     * Tests millisecond unit parsing functionality.
+     * Verifies that:
+     * <ul>
+     *   <li>Integer millisecond values are correctly converted to nanoseconds</li>
+     *   <li>Decimal millisecond values maintain proper precision</li>
+     *   <li>Conversion uses standard time units (1ms = 1,000,000ns)</li>
+     * </ul>
+     *
+     * @throws Exception if any parsing error occurs
+     */
     @Test
     public void testMilliseconds() throws Exception {
         String milli = "9ms";
