@@ -129,6 +129,10 @@ public final class UsageDefinition implements Serializable {
           sb.append(token.name());
         } else if (token.type().equals(TokenType.TIME_DURATION)) {
           sb.append(token.name());
+        } else if (token.type().equals(TokenType.BYTE_UNIT)) {
+          sb.append(token.type());
+        } else if (token.type().equals(TokenType.TIME_UNIT)) {
+          sb.append(token.type());
         }
       }
 
