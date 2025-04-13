@@ -27,7 +27,7 @@ import java.util.List;
 
 public class TimeAndByteDirectiveTest {
     @Test
-    public void testAggregateTotal() throws Exception {
+    public void testSingleOutputRow() throws Exception {
         String[] recipe = new String[] {
                 "aggregate-stats :byte_size :time_duration total_bytes mb total_duration"
         };
