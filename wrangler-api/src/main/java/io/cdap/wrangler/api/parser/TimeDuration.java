@@ -64,6 +64,11 @@ public class TimeDuration implements Token {
      * @param value the string to parse
      */
     private void extractTimeAndUnits(String value) {
+        if (value.length() <= 1) {
+            this.duration = 0;
+            return;
+        }
+
         int unitStartIndex = 0;
         if (Character.isDigit(value.charAt(value.length() - 2)) == false) {
             unitStartIndex = value.length() - 2;

@@ -69,6 +69,11 @@ public class ByteSize implements Token {
      * @param value the string to parse
      */
     private void extractBytesAndUnits(String value) {
+        if (value.length() <= 1) {
+            this.bytes = 0;
+            return;
+        }
+
         double tempValue = Double.parseDouble(value.substring(0, value.length() - 2));
         String tempByteUnits = value.substring(value.length() - 2, value.length()).toLowerCase();
 
