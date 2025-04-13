@@ -51,7 +51,7 @@ public class TimeAndByteDirectiveTest {
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
         rows.add(new Row("byte_size", "1kb").add("time_duration", "9s"));
-        rows.add(new Row("byte_size", "1000kb").add("time_duration", "4s"));
+        rows.add(new Row("byte_size", "1000kb").add("time_duration", "4ms"));
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
@@ -66,12 +66,12 @@ public class TimeAndByteDirectiveTest {
     public void testAggregateWithoutUnits() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes total_duration"};
         double expectedBytes = 2.001d;
-        double expectedDuration = 14d;
+        double expectedDuration = 10.004d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
         rows.add(new Row("byte_size", "1kb").add("time_duration", "9s"));
-        rows.add(new Row("byte_size", "1000kb").add("time_duration", "4s"));
+        rows.add(new Row("byte_size", "1000kb").add("time_duration", "4ms"));
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
@@ -164,6 +164,31 @@ public class TimeAndByteDirectiveTest {
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
         rows.add(new Row("byte_size", "1kb").add("time_duration", "2s"));
         rows.add(new Row("byte_size", "1kb").add("time_duration", "4s"));
+
+        List<Row> result = TestingRig.execute(recipe, rows);
+
+        double actualBytes = (double) result.get(0).getValue("total_bytes");
+        double actualDuration = (double) result.get(0).getValue("total_duration");
+
+        Assert.assertEquals(expectedBytes, actualBytes, 0.01);
+        Assert.assertEquals(expectedDuration, actualDuration, 0.01);
+    }
+
+    /**
+     * Tests aggregation with average.
+     */
+    @Test
+    public void testAggregateAverage() throws Exception {
+        String[] recipe = new String[]{
+                "aggregate-stats :byte_size :time_duration total_bytes kb total_duration average"
+        };
+        double expectedBytes = 334d;
+        double expectedDuration = 1.0013d;
+
+        List<Row> rows = new ArrayList<Row>();
+        rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
+        rows.add(new Row("byte_size", "1kb").add("time_duration", "2s"));
+        rows.add(new Row("byte_size", "1kb").add("time_duration", "4ms"));
 
         List<Row> result = TestingRig.execute(recipe, rows);
 

@@ -17,6 +17,7 @@
 
 package io.cdap.functions;
 
+import org.apache.kafka.common.serialization.Serdes;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -98,6 +99,7 @@ public class ByteSizeTest {
         Assert.assertEquals(5.5, ByteSize.bytesToKiloBytes(5500), 0.001);
         Assert.assertEquals(0.0, ByteSize.bytesToKiloBytes(0), 0.001);
         Assert.assertEquals(0.1, ByteSize.bytesToKiloBytes(100), 0.001);
+        Assert.assertEquals(11.2345, ByteSize.bytesToKiloBytes(11234.5), 0.001);
     }
 
     /**
@@ -116,5 +118,6 @@ public class ByteSizeTest {
         Assert.assertEquals(2.5, ByteSize.bytesToMegaBytes(2_500_000), 0.001);
         Assert.assertEquals(0.0, ByteSize.bytesToMegaBytes(0), 0.001);
         Assert.assertEquals(0.001, ByteSize.bytesToMegaBytes(1000), 0.001);
+        Assert.assertEquals(0.0112345, ByteSize.bytesToMegaBytes(11234.5), 0.001);
     }
 }

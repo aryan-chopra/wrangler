@@ -98,8 +98,8 @@ public class TimeDuration implements Token {
      * @param nanoseconds the duration in nanoseconds to convert
      * @return the equivalent duration in seconds as a double value
      */
-    public static double nanosecondsToSeconds(long nanoseconds) {
-        return (double) nanoseconds / 1_000_000_000;
+    public static double nanosecondsToSeconds(double nanoseconds) {
+        return nanoseconds / 1_000_000_000;
     }
 
     /**
@@ -108,8 +108,8 @@ public class TimeDuration implements Token {
      * @param nanoseconds the duration in nanoseconds to convert
      * @return the equivalent duration in milliseconds as a double value
      */
-    public static double nanosecondsToMilliseconds(long nanoseconds) {
-        return (double) nanoseconds / 1_000_000;
+    public static double nanosecondsToMilliseconds(double nanoseconds) {
+        return nanoseconds / 1_000_000;
     }
 
     /**

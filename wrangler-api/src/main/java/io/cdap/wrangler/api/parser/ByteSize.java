@@ -96,8 +96,8 @@ public class ByteSize implements Token {
      * @param bytes the number of bytes to convert
      * @return the equivalent value in kilobytes
      */
-    public static double bytesToKiloBytes(long bytes) {
-        return ((double) bytes / FACTOR);
+    public static double bytesToKiloBytes(double bytes) {
+        return (bytes / FACTOR);
     }
 
     /**
@@ -106,8 +106,8 @@ public class ByteSize implements Token {
      * @param bytes the number of bytes to convert
      * @return the equivalent value in megabytes
      */
-    public static double bytesToMegaBytes(long bytes) {
-        return ((double) bytes / (FACTOR * FACTOR));
+    public static double bytesToMegaBytes(double bytes) {
+        return (bytes / (FACTOR * FACTOR));
     }
 
     /**

@@ -27,6 +27,7 @@ import io.cdap.wrangler.api.ExecutorContext;
 import io.cdap.wrangler.api.Row;
 import io.cdap.wrangler.api.TransientVariableScope;
 import io.cdap.wrangler.api.annotations.Categories;
+import io.cdap.wrangler.api.parser.AggregateType;
 import io.cdap.wrangler.api.parser.ByteSize;
 import io.cdap.wrangler.api.parser.ByteUnit;
 import io.cdap.wrangler.api.parser.ColumnName;
@@ -64,10 +65,12 @@ public class TimeAndByteDirective implements Directive {
     private static final String TARGET_TOTAL_DURATION = "target_total_duration";
     private static final String TARGET_BYTE_UNITS = "target_byte_units";
     private static final String TARGET_TIME_UNITS = "target_time_units";
+    private static final String TARGET_AGGREGATE_TYPE = "target_aggregate_type";
 
     // Trasient store variable names
     private static final String STORE_BYTE_AGGREGATE = "store_byte_aggregate";
     private static final String STORE_TIME_AGGREGATE = "sore_time_aggregate";
+    private static final String STORE_TOTAL_ROWS = "store_total_rows";
 
     // Directive configuration fields
     private String sourceByteSizeColumn;
@@ -76,6 +79,7 @@ public class TimeAndByteDirective implements Directive {
     private String targetTotalDurationColumn;
     private ByteUnit targetByteUnits;
     private TimeUnit targetTimeUnits;
+    private AggregateType targetAggregateType;
 
     @Override
     public UsageDefinition define() {
@@ -88,6 +92,7 @@ public class TimeAndByteDirective implements Directive {
         builder.define(TARGET_BYTE_UNITS, TokenType.BYTE_UNIT, true);
         builder.define(TARGET_TOTAL_DURATION, TokenType.IDENTIFIER);
         builder.define(TARGET_TIME_UNITS, TokenType.TIME_UNIT, true);
+        builder.define(TARGET_AGGREGATE_TYPE, TokenType.AGGREGATE_TYPE, true);
 
         return builder.build();
     }
@@ -118,6 +123,13 @@ public class TimeAndByteDirective implements Directive {
         } else {
             this.targetTimeUnits = new TimeUnit("s");
         }
+
+        // Set aggregate type (default sum)
+        if (args.contains(TARGET_AGGREGATE_TYPE)) {
+            this.targetAggregateType = (args.value(TARGET_AGGREGATE_TYPE));
+        } else {
+            this.targetAggregateType = new AggregateType("sum");
+        }
     }
 
     @Override
@@ -129,21 +141,45 @@ public class TimeAndByteDirective implements Directive {
         if (context.getTransientStore().getVariables().contains(STORE_TIME_AGGREGATE) == false) {
             context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_TIME_AGGREGATE, 0L);
         }
+        if (context.getTransientStore().getVariables().contains(STORE_TOTAL_ROWS) == false) {
+            context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_TOTAL_ROWS, 0L);
+        }
 
         // Iterate through all rows and compute cumulative byte size and duration.
         for (Row row : rows) {
             ByteSize byteSize = new ByteSize(row.getValue(this.sourceByteSizeColumn).toString());
             TimeDuration timeDuration = new TimeDuration(row.getValue(this.sourceTimeDurationColumn).toString());
 
-            // Update accumulated values in transient store
-            long currentBytes = context.getTransientStore().get(STORE_BYTE_AGGREGATE);
-            long currentDuration = context.getTransientStore().get(STORE_TIME_AGGREGATE);
+            long currentBytes, currentDuration, currentRows;
 
-            // Update the cumulative totals in transient store.
-            context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_BYTE_AGGREGATE,
-                    currentBytes + byteSize.getBytes());
-            context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_TIME_AGGREGATE,
-                    currentDuration + timeDuration.getTime());
+            switch (this.targetAggregateType.value().toString()) {
+                case "sum":
+                    // Update accumulated values in transient store
+                    currentBytes = context.getTransientStore().get(STORE_BYTE_AGGREGATE);
+                    currentDuration = context.getTransientStore().get(STORE_TIME_AGGREGATE);
+
+                    // Update the cumulative totals in transient store.
+                    context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_BYTE_AGGREGATE,
+                            currentBytes + byteSize.getBytes());
+                    context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_TIME_AGGREGATE,
+                            currentDuration + timeDuration.getTime());
+                    break;
+
+                case "average":
+                    // Update accumulated values in transient store
+                    currentBytes = context.getTransientStore().get(STORE_BYTE_AGGREGATE);
+                    currentDuration = context.getTransientStore().get(STORE_TIME_AGGREGATE);
+                    currentRows = context.getTransientStore().get(STORE_TOTAL_ROWS);
+
+                    // Update the cumulative totals in transient store.
+                    context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_BYTE_AGGREGATE,
+                            currentBytes + byteSize.getBytes());
+                    context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_TIME_AGGREGATE,
+                            currentDuration + timeDuration.getTime());
+                    context.getTransientStore().set(TransientVariableScope.GLOBAL, STORE_TOTAL_ROWS,
+                            currentRows + 1);
+                    break;
+            }
         }
 
         // If this isn't the last batch, return empty list
@@ -151,9 +187,27 @@ public class TimeAndByteDirective implements Directive {
             return Collections.emptyList();
         }
 
-        // Fetch the aggregated values from the transient store.
-        long totalBytes = context.getTransientStore().get(STORE_BYTE_AGGREGATE);
-        long totalDuration = context.getTransientStore().get(STORE_TIME_AGGREGATE);
+        double resultingBytes = 0D;
+        double resultingDuration = 0D;
+
+        switch (this.targetAggregateType.value().toString()) {
+            case "sum":
+                // Fetch the aggregated values from the transient store.
+                resultingBytes = (long) (context.getTransientStore().get(STORE_BYTE_AGGREGATE));
+                resultingDuration = (long) (context.getTransientStore().get(STORE_TIME_AGGREGATE));
+                break;
+
+            case "average":
+                // Fetch the aggregated values from the transient store.
+                long totalBytes = context.getTransientStore().get(STORE_BYTE_AGGREGATE);
+                long totalDuration = context.getTransientStore().get(STORE_TIME_AGGREGATE);
+                long totalRows = context.getTransientStore().get(STORE_TOTAL_ROWS);
+
+                resultingBytes = (double) totalBytes / totalRows;
+                resultingDuration = (double) totalDuration / totalRows;
+                break;
+        }
+
 
         // Create a new result row with the total aggregated values.
         Row resultRow = new Row();
@@ -161,20 +215,21 @@ public class TimeAndByteDirective implements Directive {
         // Convert and store byte total in requested units
         switch (this.targetByteUnits.value().toString()) {
             case "kb":
-                resultRow.add(this.targetTotalSizeColumn, ByteSize.bytesToKiloBytes(totalBytes));
+                resultRow.add(this.targetTotalSizeColumn, ByteSize.bytesToKiloBytes(resultingBytes));
                 break;
             case "mb":
-                resultRow.add(this.targetTotalSizeColumn, ByteSize.bytesToMegaBytes(totalBytes));
+                resultRow.add(this.targetTotalSizeColumn, ByteSize.bytesToMegaBytes(resultingBytes));
                 break;
         }
 
         // Convert and store time total in requested units
         switch (this.targetTimeUnits.value().toString()) {
             case "ms":
-                resultRow.add(this.targetTotalDurationColumn, TimeDuration.nanosecondsToMilliseconds(totalDuration));
+                resultRow.add(this.targetTotalDurationColumn,
+                        TimeDuration.nanosecondsToMilliseconds(resultingDuration));
                 break;
             case "s":
-                resultRow.add(this.targetTotalDurationColumn, TimeDuration.nanosecondsToSeconds(totalDuration));
+                resultRow.add(this.targetTotalDurationColumn, TimeDuration.nanosecondsToSeconds(resultingDuration));
         }
 
         // Return a single-row list containing the result row.
