@@ -277,7 +277,8 @@ Number
  ;
 
 BYTE_UNIT
-  : 'kb'
+  : [kK][bB]
+  | [mM][bB]
   ;
 
 Identifier
