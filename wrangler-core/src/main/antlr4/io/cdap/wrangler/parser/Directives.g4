@@ -292,8 +292,8 @@ TIME_UNIT
  ;
 
 AGGREGATE_TYPE
- : [sS]'um'
- | [aA]'verage'
+ : [sS][uU][mM]
+ | [aA][vV][eE][rR][aA][gG][eE]
  ;
 
 Identifier
