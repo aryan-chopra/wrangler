@@ -181,6 +181,16 @@ public enum TokenType implements Serializable {
   TIME_UNIT,
 
   /**
+   * Token representing the aggregate operation type.
+   * Corresponds to a string token that specifies the aggregation logic.
+   * Valid values: "sum", "avg"
+   *
+   * Used in directives that support aggregation operations, e.g. aggregate-stats.
+   * Example: aggregate-stats :input_bytes :input_duration total_bytes total_duration sum
+   */
+  AGGREGATE_TYPE,
+
+  /**
    * Represents the enumerated type for the object of type {@code String} with restrictions
    * on characters that can be present in a string.
    */

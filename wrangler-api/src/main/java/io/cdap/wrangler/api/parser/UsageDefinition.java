@@ -133,6 +133,8 @@ public final class UsageDefinition implements Serializable {
           sb.append(token.name());
         } else if (token.type().equals(TokenType.TIME_UNIT)) {
           sb.append(token.name());
+        } else if (token.type().equals(TokenType.AGGREGATE_TYPE)) {
+          sb.append(token.name());
         }
       }
 

@@ -20,6 +20,7 @@ import io.cdap.wrangler.api.LazyNumber;
 import io.cdap.wrangler.api.RecipeSymbol;
 import io.cdap.wrangler.api.SourceInfo;
 import io.cdap.wrangler.api.Triplet;
+import io.cdap.wrangler.api.parser.AggregateType;
 import io.cdap.wrangler.api.parser.Bool;
 import io.cdap.wrangler.api.parser.BoolList;
 import io.cdap.wrangler.api.parser.ByteSize;
@@ -368,6 +369,18 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
   public RecipeSymbol.Builder visitTimeUnitArg(DirectivesParser.TimeUnitArgContext ctx) {
     TimeUnit unit = new TimeUnit(ctx.TIME_UNIT().getText());
     builder.addToken(unit);
+    return builder;
+  }
+
+  /**
+   * A Directive can consist of AGGREGATE_TYPE field. The AGGREGATE_TYPE field is represented as
+   * an example, "sum", "average". This visitor method extract the TIME_UNIT value into a
+   * token type <code>AGGREGATE_TYPE</code>.
+   */
+  @Override
+  public RecipeSymbol.Builder visitAggregateTypeArg(DirectivesParser.AggregateTypeArgContext ctx) {
+    AggregateType type = new AggregateType(ctx.AGGREGATE_TYPE().getText());
+    builder.addToken(type);
     return builder;
   }
 
