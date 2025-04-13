@@ -45,8 +45,8 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testSingleOutputRow() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes total_duration"};
-        double expected_bytes = 2.001d;
-        double expected_duration = 14d;
+        double expectedBytes = 2.001d;
+        double expectedDuration = 14d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
@@ -65,8 +65,8 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testAggregateWithoutUnits() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes total_duration"};
-        double expected_bytes = 2.001d;
-        double expected_duration = 14d;
+        double expectedBytes = 2.001d;
+        double expectedDuration = 14d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
@@ -75,11 +75,11 @@ public class TimeAndByteDirectiveTest {
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
-        double actual_bytes = (double) result.get(0).getValue("total_bytes");
-        double actual_duration = (double) result.get(0).getValue("total_duration");
+        double actualBytes = (double) result.get(0).getValue("total_bytes");
+        double actualDuration = (double) result.get(0).getValue("total_duration");
 
-        Assert.assertEquals(expected_bytes, actual_bytes, 0.01);
-        Assert.assertEquals(expected_duration, actual_duration, 0.01);
+        Assert.assertEquals(expectedBytes, actualBytes, 0.01);
+        Assert.assertEquals(expectedDuration, actualDuration, 0.01);
     }
 
     /**
@@ -88,8 +88,8 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testAggregateSeconds() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes total_duration s"};
-        double expected_bytes = 1.002d;
-        double expected_duration = 7d;
+        double expectedBytes = 1.002d;
+        double expectedDuration = 7d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
@@ -98,11 +98,11 @@ public class TimeAndByteDirectiveTest {
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
-        double actual_bytes = (double) result.get(0).getValue("total_bytes");
-        double actual_duration = (double) result.get(0).getValue("total_duration");
+        double actualBytes = (double) result.get(0).getValue("total_bytes");
+        double actualDuration = (double) result.get(0).getValue("total_duration");
 
-        Assert.assertEquals(expected_bytes, actual_bytes, 0.01);
-        Assert.assertEquals(expected_duration, actual_duration, 0.01);
+        Assert.assertEquals(expectedBytes, actualBytes, 0.01);
+        Assert.assertEquals(expectedDuration, actualDuration, 0.01);
     }
 
     /**
@@ -111,8 +111,8 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testAggregateMilliSeconds() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes total_duration ms"};
-        double expected_bytes = 1.002d;
-        double expected_duration = 7000d;
+        double expectedBytes = 1.002d;
+        double expectedDuration = 7000d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
@@ -121,11 +121,11 @@ public class TimeAndByteDirectiveTest {
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
-        double actual_bytes = (double) result.get(0).getValue("total_bytes");
-        double actual_duration = (double) result.get(0).getValue("total_duration");
+        double actualBytes = (double) result.get(0).getValue("total_bytes");
+        double actualDuration = (double) result.get(0).getValue("total_duration");
 
-        Assert.assertEquals(expected_bytes, actual_bytes, 0.01);
-        Assert.assertEquals(expected_duration, actual_duration, 0.01);
+        Assert.assertEquals(expectedBytes, actualBytes, 0.01);
+        Assert.assertEquals(expectedDuration, actualDuration, 0.01);
     }
 
     /**
@@ -134,8 +134,8 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testAggregateMegabytes() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes mb total_duration"};
-        double expected_bytes = 1.002d;
-        double expected_duration = 7d;
+        double expectedBytes = 1.002d;
+        double expectedDuration = 7d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
@@ -144,11 +144,11 @@ public class TimeAndByteDirectiveTest {
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
-        double actual_bytes = (double) result.get(0).getValue("total_bytes");
-        double actual_duration = (double) result.get(0).getValue("total_duration");
+        double actualBytes = (double) result.get(0).getValue("total_bytes");
+        double actualDuration = (double) result.get(0).getValue("total_duration");
 
-        Assert.assertEquals(expected_bytes, actual_bytes, 0.01);
-        Assert.assertEquals(expected_duration, actual_duration, 0.01);
+        Assert.assertEquals(expectedBytes, actualBytes, 0.01);
+        Assert.assertEquals(expectedDuration, actualDuration, 0.01);
     }
 
     /**
@@ -157,8 +157,8 @@ public class TimeAndByteDirectiveTest {
     @Test
     public void testAggregateKilobytes() throws Exception {
         String[] recipe = new String[]{"aggregate-stats :byte_size :time_duration total_bytes kb total_duration"};
-        double expected_bytes = 1002d;
-        double expected_duration = 7d;
+        double expectedBytes = 1002d;
+        double expectedDuration = 7d;
 
         List<Row> rows = new ArrayList<Row>();
         rows.add(new Row("byte_size", "1mb").add("time_duration", "1s"));
@@ -167,10 +167,10 @@ public class TimeAndByteDirectiveTest {
 
         List<Row> result = TestingRig.execute(recipe, rows);
 
-        double actual_bytes = (double) result.get(0).getValue("total_bytes");
-        double actual_duration = (double) result.get(0).getValue("total_duration");
+        double actualBytes = (double) result.get(0).getValue("total_bytes");
+        double actualDuration = (double) result.get(0).getValue("total_duration");
 
-        Assert.assertEquals(expected_bytes, actual_bytes, 0.01);
-        Assert.assertEquals(expected_duration, actual_duration, 0.01);
+        Assert.assertEquals(expectedBytes, actualBytes, 0.01);
+        Assert.assertEquals(expectedDuration, actualDuration, 0.01);
     }
 }

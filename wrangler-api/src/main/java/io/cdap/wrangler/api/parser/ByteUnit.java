@@ -33,7 +33,7 @@ import com.google.gson.JsonObject;
  * both the unit value and its JSON representation.
  * </p>
  */
-public class ByteUnit implements Token{
+public class ByteUnit implements Token {
     /**
      * The string representation of the byte unit in lowercase.
      * Valid values include "kb", "mb"

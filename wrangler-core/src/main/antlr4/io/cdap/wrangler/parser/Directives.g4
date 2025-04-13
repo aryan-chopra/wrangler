@@ -68,6 +68,7 @@ directive
     | timeDurationArg
     | byteUnitArg
     | timeUnitArg
+    | aggregateTypeArg
   )*?
   ;
 
@@ -200,20 +201,24 @@ identifierList
  ;
 
 byteSizeArg
-  : BYTE_SIZE
-  ;
+ : BYTE_SIZE
+ ;
 
 timeDurationArg
-  : TIME_DURATION
-  ;
+ : TIME_DURATION
+ ;
 
 byteUnitArg
-    : BYTE_UNIT
-    ;
+ : BYTE_UNIT
+ ;
 
 timeUnitArg
-    : TIME_UNIT
-    ;
+ : TIME_UNIT
+ ;
+
+aggregateTypeArg
+ : AGGREGATE_TYPE
+ ;
 
 /*
  * Following are the Lexer Rules used for tokenizing the recipe.
@@ -277,14 +282,19 @@ Number
  ;
 
 BYTE_UNIT
-  : [kK][bB]
-  | [mM][bB]
-  ;
+ : [kK][bB]
+ | [mM][bB]
+ ;
 
 TIME_UNIT
-  : [mM] [sS]
-  | [sS]
-  ;
+ : [mM][sS]
+ | [sS]
+ ;
+
+AGGREGATE_TYPE
+ : [sS]'um'
+ | [aA]'verage'
+ ;
 
 Identifier
  : [a-zA-Z_\-] [a-zA-Z_0-9\-]*
