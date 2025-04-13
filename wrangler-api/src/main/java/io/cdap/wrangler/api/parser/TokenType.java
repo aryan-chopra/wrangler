@@ -152,9 +152,9 @@ public enum TokenType implements Serializable {
 
   TIME_DURATION,
 
-  TIME_UNIT,
-
   BYTE_UNIT,
+
+  TIME_UNIT,
 
   /**
    * Represents the enumerated type for the object of type {@code String} with restrictions

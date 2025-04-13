@@ -276,6 +276,10 @@ Number
  : Int ('.' Digit*)?
  ;
 
+BYTE_UNIT
+  : 'kb'
+  ;
+
 Identifier
  : [a-zA-Z_\-] [a-zA-Z_0-9\-]*
  ;
@@ -335,10 +339,6 @@ BYTE_SIZE
   : Int BYTE_UNIT
   ;
 
-BYTE_UNIT
-  : [kK] [bB]
-  | [mM] [bB]
-  ;
 
 TIME_DURATION
   : Int TIME_UNIT

@@ -23,6 +23,7 @@ import io.cdap.wrangler.api.Triplet;
 import io.cdap.wrangler.api.parser.Bool;
 import io.cdap.wrangler.api.parser.BoolList;
 import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.ByteUnit;
 import io.cdap.wrangler.api.parser.ColumnName;
 import io.cdap.wrangler.api.parser.ColumnNameList;
 import io.cdap.wrangler.api.parser.DirectiveName;
@@ -331,6 +332,13 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
   public RecipeSymbol.Builder visitTimeDurationArg(DirectivesParser.TimeDurationArgContext ctx) {
     TimeDuration duration = new TimeDuration(ctx.TIME_DURATION().getText());
     builder.addToken(duration);
+    return builder;
+  }
+
+  @Override
+  public RecipeSymbol.Builder visitByteUnitArg(DirectivesParser.ByteUnitArgContext ctx) {
+    ByteUnit unit = new ByteUnit(ctx.BYTE_UNIT().getText());
+    builder.addToken(unit);
     return builder;
   }
 
