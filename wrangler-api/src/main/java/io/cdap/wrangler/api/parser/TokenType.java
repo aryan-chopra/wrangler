@@ -148,12 +148,36 @@ public enum TokenType implements Serializable {
    */
   RANGES,
 
+  /**
+   * Token representing byte size values with units.
+   * Corresponds to {@link ByteSize} class.
+   * Format: <number><unit> where unit is kb/mb
+   * Example: "10mb"
+   */
   BYTE_SIZE,
 
+  /**
+   * Token representing time duration values with units.
+   * Corresponds to {@link TimeDuration} class.
+   * Format: <number><unit> where unit is ms/s/m etc.
+   * Example: "30s"
+   */
   TIME_DURATION,
 
+  /**
+   * Token representing byte size units only.
+   * Corresponds to {@link ByteUnit} class.
+   * Valid values: kb, mb
+   * Example: "mb"
+   */
   BYTE_UNIT,
 
+  /**
+   * Token representing time duration units only.
+   * Corresponds to {@link TimeUnit} class.
+   * Valid values: ms, s
+   * Example: "ms"
+   */
   TIME_UNIT,
 
   /**
