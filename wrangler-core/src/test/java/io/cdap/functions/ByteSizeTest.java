@@ -81,4 +81,40 @@ public class ByteSizeTest {
         Assert.assertEquals(15_000_000, mbSize.getBytes());
         Assert.assertEquals(5_940_000, decimalSize.getBytes());
     }
+
+    /**
+     * Tests conversion from bytes to kilobytes.
+     * Verifies that:
+     * <ul>
+     *   <li>1000 bytes is correctly converted to 1.0 kilobyte</li>
+     *   <li>5500 bytes is correctly converted to 5.5 kilobytes</li>
+     *   <li>0 bytes is converted to 0.0 kilobyte</li>
+     *   <li>100 bytes is converted to 0.1 kilobyte</li>
+     * </ul>
+     */
+    @Test
+    public void testBytesToKiloBytes() {
+        Assert.assertEquals(1.0, ByteSize.bytesToKiloBytes(1000), 0.001);
+        Assert.assertEquals(5.5, ByteSize.bytesToKiloBytes(5500), 0.001);
+        Assert.assertEquals(0.0, ByteSize.bytesToKiloBytes(0), 0.001);
+        Assert.assertEquals(0.1, ByteSize.bytesToKiloBytes(100), 0.001);
+    }
+
+    /**
+     * Tests conversion from bytes to megabytes.
+     * Verifies that:
+     * <ul>
+     *   <li>1,000,000 bytes is correctly converted to 1.0 megabyte</li>
+     *   <li>2,500,000 bytes is correctly converted to 2.5 megabytes</li>
+     *   <li>0 bytes is converted to 0.0 megabyte</li>
+     *   <li>1000 bytes is converted to 0.001 megabyte</li>
+     * </ul>
+     */
+    @Test
+    public void testBytesToMegaBytes() {
+        Assert.assertEquals(1.0, ByteSize.bytesToMegaBytes(1_000_000), 0.001);
+        Assert.assertEquals(2.5, ByteSize.bytesToMegaBytes(2_500_000), 0.001);
+        Assert.assertEquals(0.0, ByteSize.bytesToMegaBytes(0), 0.001);
+        Assert.assertEquals(0.001, ByteSize.bytesToMegaBytes(1000), 0.001);
+    }
 }

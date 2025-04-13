@@ -81,4 +81,38 @@ public class TimeDurationTest {
         Assert.assertEquals(9_000_000L, milliDuration.getTime());
         Assert.assertEquals(5_950_000L, decimalDuration.getTime());
     }
+
+    /**
+     * Tests conversion from nanoseconds to milliseconds.
+     * Verifies that:
+     * <ul>
+     *   <li>Exact millisecond values are correctly returned</li>
+     *   <li>Sub-millisecond nanosecond values return correct decimal values</li>
+     *   <li>Zero nanoseconds returns 0.0 milliseconds</li>
+     * </ul>
+     */
+    @Test
+    public void testNanosecondsToMilliseconds() {
+        Assert.assertEquals(1.0, TimeDuration.nanosecondsToMilliseconds(1_000_000), 0.001);
+        Assert.assertEquals(2.5, TimeDuration.nanosecondsToMilliseconds(2_500_000), 0.001);
+        Assert.assertEquals(0.0, TimeDuration.nanosecondsToMilliseconds(0), 0.001);
+        Assert.assertEquals(0.001, TimeDuration.nanosecondsToMilliseconds(1_000), 0.001);
+    }
+
+    /**
+     * Tests conversion from nanoseconds to seconds.
+     * Verifies that:
+     * <ul>
+     *   <li>Exact second values are correctly returned</li>
+     *   <li>Sub-second nanosecond values return correct decimal values</li>
+     *   <li>Zero nanoseconds returns 0.0 seconds</li>
+     * </ul>
+     */
+    @Test
+    public void testNanosecondsToSeconds() {
+        Assert.assertEquals(1.0, TimeDuration.nanosecondsToSeconds(1_000_000_000), 0.001);
+        Assert.assertEquals(2.5, TimeDuration.nanosecondsToSeconds(2_500_000_000L), 0.001);
+        Assert.assertEquals(0.0, TimeDuration.nanosecondsToSeconds(0), 0.001);
+        Assert.assertEquals(0.000001, TimeDuration.nanosecondsToSeconds(1_000), 0.0000001);
+    }
 }
