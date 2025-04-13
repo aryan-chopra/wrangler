@@ -36,6 +36,7 @@ import io.cdap.wrangler.api.parser.Ranges;
 import io.cdap.wrangler.api.parser.Text;
 import io.cdap.wrangler.api.parser.TextList;
 import io.cdap.wrangler.api.parser.TimeDuration;
+import io.cdap.wrangler.api.parser.TimeUnit;
 import io.cdap.wrangler.api.parser.Token;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -338,6 +339,13 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
   @Override
   public RecipeSymbol.Builder visitByteUnitArg(DirectivesParser.ByteUnitArgContext ctx) {
     ByteUnit unit = new ByteUnit(ctx.BYTE_UNIT().getText());
+    builder.addToken(unit);
+    return builder;
+  }
+
+  @Override
+  public RecipeSymbol.Builder visitTimeUnitArg(DirectivesParser.TimeUnitArgContext ctx) {
+    TimeUnit unit = new TimeUnit(ctx.TIME_UNIT().getText());
     builder.addToken(unit);
     return builder;
   }

@@ -28,6 +28,7 @@ import io.cdap.wrangler.api.Row;
 import io.cdap.wrangler.api.TransientVariableScope;
 import io.cdap.wrangler.api.annotations.Categories;
 import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.ByteUnit;
 import io.cdap.wrangler.api.parser.ColumnName;
 import io.cdap.wrangler.api.parser.Identifier;
 import io.cdap.wrangler.api.parser.TimeDuration;
@@ -67,7 +68,7 @@ public class TimeAndByteDirective implements Directive {
     private String sourceTimeDurationColumn;
     private String targetTotalSizeColumn;
     private String targetTotalDurationColumn;
-    private String targetByteUnits;
+    private ByteUnit targetByteUnits;
 
     @Override
     public UsageDefinition define() {
@@ -77,7 +78,7 @@ public class TimeAndByteDirective implements Directive {
         builder.define(SOURCE_BYTE_SIZE, TokenType.COLUMN_NAME);
         builder.define(SOURCE_TIME_DURATION, TokenType.COLUMN_NAME);
         builder.define(TARGET_TOTAL_SIZE, TokenType.IDENTIFIER);
-        builder.define(TARGET_BYTE_UNITS, TokenType.BYTE_UNIT);
+        builder.define(TARGET_BYTE_UNITS, TokenType.BYTE_UNIT, true);
         builder.define(TARGET_TOTAL_DURATION, TokenType.IDENTIFIER);
 
         return builder.build();
@@ -97,6 +98,13 @@ public class TimeAndByteDirective implements Directive {
         this.sourceByteSizeColumn = ((ColumnName) args.value(SOURCE_BYTE_SIZE)).value();
         this.sourceTimeDurationColumn = ((ColumnName) args.value(SOURCE_TIME_DURATION)).value();
         this.targetTotalSizeColumn = ((Identifier) args.value(TARGET_TOTAL_SIZE)).value();
+
+        if (args.contains(TARGET_BYTE_UNITS)) {
+            this.targetByteUnits = (args.value(TARGET_BYTE_UNITS));
+        } else {
+            this.targetByteUnits = new ByteUnit("kb");
+        }
+
         this.targetTotalDurationColumn = ((Identifier) args.value(TARGET_TOTAL_DURATION)).value();
     }
 

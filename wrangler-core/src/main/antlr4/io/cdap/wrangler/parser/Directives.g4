@@ -281,6 +281,11 @@ BYTE_UNIT
   | [mM][bB]
   ;
 
+TIME_UNIT
+  : [mM] [sS]
+  | [sS]
+  ;
+
 Identifier
  : [a-zA-Z_\-] [a-zA-Z_0-9\-]*
  ;
@@ -343,9 +348,4 @@ BYTE_SIZE
 
 TIME_DURATION
   : Int TIME_UNIT
-  ;
-
-TIME_UNIT
-  : [mM] [sS]
-  | [sS]
   ;

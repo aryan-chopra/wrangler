@@ -19,10 +19,10 @@ package io.cdap.wrangler.api.parser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class ByteUnit implements Token{
+public class TimeUnit implements Token {
     private String value;
 
-    public ByteUnit(String value) {
+    public TimeUnit(String value) {
         this.value = value.toLowerCase();
     }
 
@@ -33,13 +33,13 @@ public class ByteUnit implements Token{
 
     @Override
     public TokenType type() {
-        return TokenType.BYTE_UNIT;
+        return TokenType.TIME_UNIT;
     }
 
     @Override
     public JsonElement toJson() {
         JsonObject object = new JsonObject();
-        object.addProperty("type", TokenType.BYTE_UNIT.name());
+        object.addProperty("type", TokenType.TIME_UNIT.name());
         object.addProperty("value", this.value);
         return object;
     }
